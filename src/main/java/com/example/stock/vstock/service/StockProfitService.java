@@ -54,4 +54,8 @@ public List<ProfitResponse> getTop10StocksProfitPercentage(){
 
 
 }
+public void getallDetails(){
+    System.out.println("Rakesh here");
+}
+
 }
