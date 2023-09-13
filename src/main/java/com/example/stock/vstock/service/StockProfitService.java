@@ -20,6 +20,7 @@ private CoinPriceRepository coinPriceRepository;
 
 
 public List<CoinPrice> getTopStocks(){
+
     return coinPriceRepository.findAll();
 }
 public List<ProfitResponse> getTop10StocksProfitPercentage(){
@@ -31,12 +32,12 @@ public List<ProfitResponse> getTop10StocksProfitPercentage(){
     for(Object[] row:result){
       ProfitResponse profitResponse=new ProfitResponse();
       profitResponse.setCoinName((String) row[0]);
-      profitResponse.setDayStartValue((String) row[1]);
-      profitResponse.setPresentValue((String) row[2]);
+      profitResponse.setDayStartValue((Double) row[1]);
+      profitResponse.setPresentValue((Double) row[2]);
       profitResponse.setRowValue((Long) row[3]);
 
-      double dayStartStock=Double.parseDouble(profitResponse.getDayStartValue());
-      double dayPresentStock=Double.parseDouble(profitResponse.getPresentValue());
+      double dayStartStock=profitResponse.getDayStartValue();
+      double dayPresentStock=profitResponse.getPresentValue();
 
       if(dayStartStock!=0 && dayPresentStock!=0 && profitResponse.getRowValue()==1) {
           double profitPercent = ((dayStartStock - dayPresentStock) / dayPresentStock) * 100;

@@ -9,9 +9,9 @@ public class ProfitResponse {
 
     private double profitPercentage;
 
-    private String dayStartValue;
+    private Double dayStartValue;
 
-    private String presentValue;
+    private Double presentValue;
 
     private Long rowValue;
 }
