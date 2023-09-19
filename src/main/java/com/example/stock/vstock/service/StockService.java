@@ -1,16 +1,19 @@
 package com.example.stock.vstock.service;
 
 import com.example.stock.vstock.config.respository.CoinPriceRepository;
+import com.example.stock.vstock.config.respository.DailyMaxPriceRepository;
 import com.example.stock.vstock.entity.CoinPrice;
 import com.example.stock.vstock.model.CoinResponse;
 import com.example.stock.vstock.model.PriceResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -18,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Component
+@Service
 public class StockService {
     public final String COIN_LIST_URI = "https://api.coingecko.com/api/v3/coins/list?include_platform=false";
 
@@ -28,6 +31,8 @@ public class StockService {
     private RestTemplate restTemplate;
     @Autowired
     public CoinPriceRepository coinPriceRepository;
+    @Autowired
+    public DailyMaxPriceRepository dailyMaxPriceRepository;
 
     public static List<CoinPrice> coinPriceList = new ArrayList<>();
     String coinString = "";
@@ -73,20 +78,26 @@ public class StockService {
                 coinPriceRepository.save(coinPrice);
 
                 //Store in local list
-                coinPriceList.add(coinPrice);
+                //coinPriceList.add(coinPrice);
 
             }
         }
 
-        System.out.printf("Loaded the stock prices into memory");
+        System.out.println("Loaded the stock prices into memory");
     }
 
-    @Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelay = 200000)
     public void savePriceDetailsOnFixedTime() {
 
-        System.out.printf("Loading the stock prices into memory");
+        System.out.println("Loading the stock prices into memory");
 
         savePriceListDetails();
     }
-
+    @Transactional
+    @Scheduled(fixedDelay = 100000)
+    public void saveMaxPricesIntoDailyMaxPricesTable() {
+        System.out.println("Started updating DailyMaxPricesTable......");
+        dailyMaxPriceRepository.insertMaxPricesIntoDailyMaxPricesTable();
+        System.out.println("Finished updating DailyMaxPricesTable.......");
+    }
 }
