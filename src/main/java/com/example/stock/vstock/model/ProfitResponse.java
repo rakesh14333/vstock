@@ -2,16 +2,21 @@ package com.example.stock.vstock.model;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Data
 public class ProfitResponse {
 
     private String coinName;
 
-    private double profitPercentage;
+    private LocalDate maxDate;
 
-    private Double dayStartValue;
+    private Double maxPrice;
 
-    private Double presentValue;
+    private Double firstStockPrice;
 
-    private Long rowValue;
+    private Double lastStockPrice;
+
+    private Double profitPercentage;
 }

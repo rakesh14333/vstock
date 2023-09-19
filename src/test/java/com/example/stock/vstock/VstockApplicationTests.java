@@ -4,7 +4,8 @@ import com.example.stock.vstock.config.respository.CoinPriceRepository;
 import com.example.stock.vstock.model.ProfitResponse;
 import com.example.stock.vstock.service.StockProfitService;
 
-
+import com.google.gson.Gson;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
